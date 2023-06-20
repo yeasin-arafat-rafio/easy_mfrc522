@@ -84,22 +84,22 @@ void EasyMFRC522::setKeyA(byte keyA[6]) {
 }
 
 bool EasyMFRC522::detectTag(byte outputTagId[4]) {
-  if (! device.PICC_IsNewCardPresent())
+  if (!this->device.PICC_IsNewCardPresent())
     return false;
 
-  if (! device.PICC_ReadCardSerial())  //selects one of the cards/tags
-      return false;
+  if (!this->device.PICC_ReadCardSerial())  //selects one of the cards/tags
+    return false;
 
-  MFRC522::PICC_Type piccType = device.PICC_GetType(device.uid.sak);
-  
+  MFRC522::PICC_Type piccType = this->device.PICC_GetType(this->device.uid.sak);
+
   // accepts only Mifare Classic protocol
   if (piccType == MFRC522::PICC_TYPE_MIFARE_MINI
-		    || piccType == MFRC522::PICC_TYPE_MIFARE_1K
-		    || piccType == MFRC522::PICC_TYPE_MIFARE_4K) {
+      || piccType == MFRC522::PICC_TYPE_MIFARE_1K
+      || piccType == MFRC522::PICC_TYPE_MIFARE_4K) {
 
     // copies the tag's ID to the variable provided
     if (outputTagId != NULL) {
-      for (int i = 0; i < 4; i ++) {
+      for (int i = 0; i < 4; i++) {
         outputTagId[i] = this->device.uid.uidByte[i];
       }
     }
@@ -109,6 +109,7 @@ bool EasyMFRC522::detectTag(byte outputTagId[4]) {
 
   return false;
 }
+
 
 void EasyMFRC522::unselectMifareTag(bool allowRedetection) {
   device.PICC_HaltA();
